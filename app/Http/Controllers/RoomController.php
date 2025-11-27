@@ -12,10 +12,29 @@ class RoomController extends Controller
     $rooms = Room::all();
      return view('rooms.index', compact('rooms'));
     }
-    public function store(Request $request)
-    {
-        return Room::create($request->all());
-    }
+
+          // إضافة صفحة إنشاء غرفة جديدة
+    public function create() {
+    return view('rooms.add'); // هنا اسم ملف Blade الخاص بواجهة إضافة الغرفة
+}
+
+
+   public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'status' => 'required|in:available,busy,maintenance',
+    ]);
+
+    Room::create([
+        'name' => $request->name,
+        'status' => $request->status,
+        'code' => 'R' . rand(1000, 9999), // هذا السطر أضفناه هنا
+    ]);
+
+    return redirect()->route('rooms.index')->with('success', 'Room added successfully!');
+}
+
 
     public function show($id)
     {
