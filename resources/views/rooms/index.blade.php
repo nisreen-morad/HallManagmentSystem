@@ -24,6 +24,11 @@
     <!-- BEGIN Content -->
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <div class="container-xxl">
+            @if(session('success'))
+    <div class="alert alert-success mb-5">
+        {{ session('success') }}
+    </div>
+            @endif
 
             @if($rooms->isEmpty())
                 <div class="card-px text-center pt-15 pb-15">
@@ -69,14 +74,10 @@
             ediet
         </a>
 
-        <!-- زر الحذف -->
-        <form action="{{ route('rooms.destroy', $room->id) }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-light btn-sm">
-                delete
-            </button>
-        </form>
+        <a href="{{ route('rooms.deletePage', $room->id) }}" class="btn btn-light btn-sm">
+    delete
+</a>
+
     </div>
 </td>
 

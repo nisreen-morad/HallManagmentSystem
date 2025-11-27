@@ -30,8 +30,15 @@ class RoomController extends Controller
     }
 
     public function destroy($id)
-    {
-        Room::destroy($id);
-        return response()->json(['message' => 'Deleted']);
-    }
+{
+    Room::destroy($id);
+    return redirect()->route('rooms.index')->with('success', 'Room deleted successfully!');
+}
+
+    public function deletePage($id)
+{
+    $room = Room::findOrFail($id);
+    return view('rooms.delete', compact('room'));
+}
+
 }
