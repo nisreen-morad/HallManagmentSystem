@@ -41,12 +41,25 @@ class RoomController extends Controller
         return Room::findOrFail($id);
     }
 
-    public function update(Request $request, $id)
-    {
-        $room = Room::findOrFail($id);
-        $room->update($request->all());
-        return $room;
-    }
+    public function edit($id)
+{
+    $room = Room::findOrFail($id);
+    return view('rooms.edit', compact('room'));
+}
+
+   public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'status' => 'nullable|string|in:available,busy,maintenance',
+    ]);
+
+    $room = Room::findOrFail($id);
+    $room->update($request->only(['name','status']));
+
+    return redirect()->route('rooms.index')->with('success', 'Room updated successfully!');
+}
+ 
 
     public function destroy($id)
 {
